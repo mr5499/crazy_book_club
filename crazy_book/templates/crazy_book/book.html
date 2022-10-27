@@ -1,0 +1,30 @@
+{% extends 'crazy_book/base.html' %}
+
+{% block content %}
+
+    <p>Book: {{ book }}</p>
+    <p>Author: {{ book.authors }}</p>
+    <p>Publishing year: {{ book.year_published }}</p>
+
+    <p>Reviews:</p>
+    <p>
+        <a href="{% url 'crazy_book:new_review' book.id %}">Add a new review</a>
+    </p>
+
+    <ul>
+    {% for review in reviews %}
+        <li>
+            <p>{{ review.date_added|date:'M d, Y H:i'}}</p>
+            <p>{{ review|linebreaks }}</p>
+            <p>
+                <a href="{% url 'crazy_book:edit_review' review.id %}">Edit review</a>
+            </p>
+        </li>
+    {% empty %}
+        <li>There are no reviews for this book yet.</li>
+    {% endfor %}
+    </ul>
+
+
+
+{% endblock content %}
