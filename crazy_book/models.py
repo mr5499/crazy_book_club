@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Book(models.Model):
@@ -10,6 +11,8 @@ class Book(models.Model):
     # the dates when the book was added and modified, both automatically maintained
     date_added = models.DateTimeField(auto_now_add = True)
     date_modified = models.DateTimeField(auto_now_add = True)
+    
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
         # returns a string representation of the book's name
@@ -30,3 +33,4 @@ class Review(models.Model):
     def __str__(self):
         # returns a string representation of the review in the reviews-part
         return f"{self.my_review[:50]}"
+

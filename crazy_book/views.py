@@ -2,6 +2,7 @@ from multiprocessing import context
 from django.shortcuts import render, redirect
 from .models import Book, Review
 from .forms import BookForm, ReviewForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
@@ -21,6 +22,7 @@ def book(request, book_id):
     context = {'book': book, 'reviews': reviews}
     return render(request, 'crazy_book/book.html', context)
 
+@login_required
 def new_book(request):
     # add a new book
     if request.method != 'POST':
@@ -37,6 +39,7 @@ def new_book(request):
     context = {'form': form}
     return render(request, 'crazy_book/new_book.html', context)
 
+@login_required
 def new_review(request, book_id):
     # add a new review for a book
     book = Book.objects.get(id=book_id)
@@ -57,6 +60,7 @@ def new_review(request, book_id):
     context = {'book': book, 'form': form}
     return render(request, 'crazy_book/new_review.html', context)
 
+@login_required
 def edit_review(request, review_id):
     # edit an existing review
     review = Review.objects.get(id=review_id)
