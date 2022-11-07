@@ -1,8 +1,8 @@
-from multiprocessing import context
 from django.shortcuts import render, redirect
 from .models import Book, Review
 from .forms import BookForm, ReviewForm
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 
 # Create your views here.
 def index(request):
@@ -32,7 +32,9 @@ def new_book(request):
         # POST data submitted; process data
         form = BookForm(data=request.POST)
         if form.is_valid():
-            form.save()
+            new_review = form.save(commit=False)
+            new_review.owner = request.user
+            new_review.save()
             return redirect('crazy_book:books')
         
     # display a blank or invalid form
@@ -65,6 +67,8 @@ def edit_review(request, review_id):
     # edit an existing review
     review = Review.objects.get(id=review_id)
     book = review.book
+    if book.owner != request.user:
+        raise Http404
     
     if request.method != 'POST':
         # initial request; pre-fill form with the current book
