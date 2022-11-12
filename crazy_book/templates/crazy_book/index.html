@@ -6,7 +6,11 @@
 
         <p class="lead">Upload your favorite books and add reviews to them.</p>
 
+        <a class="btn btn-lg btn-primary" href="{% url 'users:login' %}"
+            role="button">Log in</a>
+        
         <a class="btn btn-lg btn-primary" href="{% url 'users:register' %}"
             role="button">Register</a>
+
     </div>
 {% endblock page_header %}
